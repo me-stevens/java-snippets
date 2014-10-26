@@ -1,0 +1,104 @@
+---
+layout: default
+title: "Roots of a quadratic equation"
+permalink: /qroots/
+menuname: "Quadratic roots"
+mathjax: true
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>The discriminant of a polynomial is a function of its coefficients, typically denoted by a capital <em>D</em> or the capital Greek letter Delta (&#916;). It gives information about the nature of its roots. For example, the discriminant of the quadratic polynomial:</p>
+
+				<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>&#160;</mo><mo>+</mo><mi>c</mi></math></p>
+
+				<p>is</p>
+
+				<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>&#916;</mi><mo>=</mo><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></math></p>
+
+				<p>This java class has a function called <code>discriminant2n()</code> to calculate the discriminant:
+
+				<pre><code class="language-java">public static double discriminant2n(double a, double b, double c) {
+	double d =  b*b - 4*a*c ;
+	return d;
+}</code></pre>
+
+				<p>so that we can call it like this:</p>
+
+				<pre><code class="language-java">d = discriminant2n(a, b, c);</code></pre>
+
+				<p>and a function <code>calculateRoots()</code> to calculate the actual roots. For real <em>a</em>, <em>b</em> and <em>c</em>, the solution to the quadratic equation is:
+
+				<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&#177;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&#177;</mo><msqrt><mi>&#916;</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>
+
+				<p>There are three cases:</p>
+
+				<p class="text-center"><a title="By Olin (Own work) [CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3AQuadratic_eq_discriminant.svg"><img width="256" alt="Quadratic eq discriminant" src="//upload.wikimedia.org/wikipedia/commons/thumb/3/35/Quadratic_eq_discriminant.svg/256px-Quadratic_eq_discriminant.svg.png"/></a></p>
+
+				<ol>
+
+
+
+					<li><strong>If &#916; = 0</strong>, the polynomial has one real double root:</li>
+
+					<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>
+
+					<p>which is calculated as <code>r0</code> so that it can be reused in the other two calculations:</p>
+
+					<pre><code class="language-java">r0 = - b / (2*a);
+
+if (d == 0) {
+	System.out.println("\nThe discriminant is zero. The only root of the quadratic equation is r = " + Commons.twoDecimals(r0) + ".\n");
+}</code></pre>
+
+					<p>The function <code>Commons.twoDecimals</code> prints the number with a point and two decimals (see <a href="{{ site.baseurl }}/commons/">Commons</a>).</p>
+
+
+
+
+
+
+					<li><strong>If &#916; &gt; 0</strong>, the polynomial has two real roots:</li>
+
+					<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mi>b</mi><mo>+</mo><msqrt><mi>&#916;</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math> and <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mi>b</mi><mo>-</mo><msqrt><mi>&#916;</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>
+
+					<p>so we take the previously calculated <code>r0</code> value and add and substract the square root of the discriminant divided by <em>2a</em>:</p>
+
+					<pre><code class="language-java">else if (d > 0) {
+	r = r0 + ( Math.sqrt(d) / (2*a) );
+	System.out.print("\nThe discriminant is positive. The roots of the quadratic equation are r1 = " + Commons.twoDecimals(r) );
+
+	r = r0 - ( Math.sqrt(d) / (2*a) );
+	System.out.println(" and r2 = " + Commons.twoDecimals(r) + ".\n");
+}</code></pre>
+
+
+
+
+					<li><strong>If &#916; &lt; 0</strong>, the polynomial has no real roots. The solutions are:</li>
+
+					<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msqrt><mo>-</mo></msqrt><mi>&#916;</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math> and <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>-</mo><mfrac><mrow><msqrt><mo>-</mo></msqrt><mi>&#916;</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>
+
+					<p>which can also be written as:</p>
+
+					<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>+</mo><mfrac><msqrt><mi>&#916;</mi></msqrt><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mi>i</mi></math> and <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mi>b</mi></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>-</mo><mfrac><msqrt><mi>&#916;</mi></msqrt><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mi>i</mi></math></p>
+
+					<p>since <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi><mo>=</mo><msqrt><mo>-</mo><mn>1</mn></msqrt></math> and <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><mo>-</mo><mi>&#916;</mi></msqrt><mo>=</mo><msqrt><mo>-</mo><mn>1</mn></msqrt><msqrt><mi>&#916;</mi></msqrt><mo>=</mo><mi>i</mi><msqrt><mi>&#916;</mi></msqrt></math>. So we take <code>r0</code> and calculate <code>r</code> as <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><msqrt><mi>&#916;</mi></msqrt><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math> and print it as <code>r0 + r i</code></p>
+
+					<pre><code class="language-java">else if (d < 0) {
+	r = Math.sqrt( Math.abs(d) ) / (2*a);
+	System.out.println("\nThe discriminant is negative. The roots of the quadratic equation are complex: r1 = " + Commons.twoDecimals(r0) + " + " + Commons.twoDecimals(r) + "i and r2 = " + Commons.twoDecimals(r0) + " - " + Commons.twoDecimals(r) + "i.\n" );
+}</code></pre>
+
+				</ol>
+
+
+
+
+
+				<p>Finally, we only do these calculations if <em>a &gt; 0</em>, since we would be dividing by zero otherwise.</p>
+
+				<pre><code class="language-java">if (a != 0) {...}</code></pre>
+
+				<p>The discriminant of cubic polynomials can also be calculated, as well as for higher degrees, but it is not included here.</p>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/qRoots">View Quadratic Root's repo</a></span>

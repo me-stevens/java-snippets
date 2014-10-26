@@ -1,0 +1,90 @@
+code[class*="language-"] {
+	padding: 0;
+	background: $text-color;
+	box-shadow: -.3em 0 0 .3em $text-color, .3em 0 0 .3em $text-color;
+}
+
+@media only screen and (min-width: 19.5em) {/* 320px */ 
+	.footer {
+		padding-left: 33%;
+	}
+}
+
+@media only screen and (min-width: 29.5em) { /*  480px */
+	.button {
+		width: 40%;
+	}
+}
+@media only screen and (min-width: 49.5em) {/* 800px */
+
+	.title {
+		width: $page-width;
+	}
+
+	.menu-icon {
+		display: none;
+	}
+
+	.menu {
+		padding: .25em .125em .25em .625em;
+	}
+
+	.container {
+		background-size: 25%;
+	}
+
+	.sidebar {
+		padding-left: $sidebar-padding;
+		width:        $sidebar-width;
+		padding-bottom: 25%;
+		max-height: 100%;
+		overflow: visible;
+		transition: none;
+		text-align: left;	
+	}
+
+	.main {
+		width: $main-width;
+		margin-left: 1em;
+	}
+
+	.sidebar,
+	.main {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	.button {
+		width: 10em;
+	}
+
+	.footer {
+		padding-left: 0;
+	}
+}
+
+@media only screen and (min-width: 60.5em) {/* 980px */
+	
+	body {
+		font-size: 110%;
+	}
+
+	.container {
+		width: $page-width;
+	}
+}
+
+@media only screen and (min-width: 79.5em) {/* 1280px */
+	
+	body {
+		font-size: 120%;
+	}
+}
+
+@media only screen and (min-width: 95.5em) {/* 1530px */
+
+	
+	body {
+		font-size: 130%;
+	}
+}

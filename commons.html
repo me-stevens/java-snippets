@@ -1,0 +1,81 @@
+---
+layout: default
+title: "The Commons class"
+menuname: "Commons"
+permalink: /commons/
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>This is a final class that contains static functions that can be called inside the other programs in the repo without having to create and object.</p>
+
+				<p><strong>Methods:</strong></p>
+	
+				<ul>
+					<li><code>twoDecimals()</code></li>
+					<li><code>readDouble()</code></li>
+					<li><code>readInt()</code></li>
+				</ul>
+
+
+				<h3>Method <code>twoDecimals()</code></h3>
+
+				<p>The function <code>Commons.twoDecimals()</code> uses <code>format</code> method of the class <code>String</code> that allows to format the basic types, but converts them into a String object. Since this function depends on the localization, your decimals could appear with commas instead of dots, thats why we add <code>Locale.US</code>. We also have to import the class where <code>Locale</code> is:</p>
+
+				<pre><code class="language-java">import java.util.Locale;
+
+...
+
+public static String Commons.twoDecimals(double r) {
+	String sr = String.format(Locale.US, "%.2f", r);
+	return sr;
+}</code></pre>
+
+				<p>This function can be extended to include truncating to <em>n</em> decimals, for example, adding <code>n</code> as a parameter.</p>
+
+
+
+				<h3>Method <code>readDouble()</code></h3>
+
+				<p>The function <code>Commons.readDouble()</code> is used to read a number entered by keyboard input, and to check that it is indeed a number. To avoid working with exceptions, the method <code>hasNextDouble()</code> of the class "Scanner" is used. If the result of the method is <code>true</code>, the string read by keyboard input is parsed to double:</p>
+
+				<pre><code class="language-java">String s = reader.nextLine();
+Scanner sc = new Scanner(s);
+
+if ( sc.hasNextDouble() ) {
+	d = Double.parseDouble(s);
+}</code></pre>
+
+				<p>If the result were <code>false</code>, the program would keep asking to enter a number until a number is entered.</p>
+
+				<p>You can enter decimal numbers with this technique, but they must be written in scientific notation. For example, for <code>2.3</code> you will write <code>23e-1</code>.
+
+				<p>Here the whole code of the function:</p>
+
+				<pre><code class="language-java">public static double readDouble() {
+	Scanner reader = new Scanner(System.in);
+	boolean b = true;
+	double  d = 0;
+
+	do {
+		String s = reader.nextLine();
+		Scanner sc = new Scanner(s);
+
+		if ( sc.hasNextDouble() ) {
+			b = false;
+			d = Double.parseDouble(s);
+		}
+		else {
+			b = true;
+			System.out.print("ERROR - You must introduce a number: ");
+		}
+
+	} while (b);
+
+	return d;
+}</code></pre>
+
+				<h3>Method <code>readInt()</code></h3>
+
+				<p>Same as <code>readDouble()</code>, but for int.</p>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/commons">View Commons's repo</a></span>

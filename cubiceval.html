@@ -1,0 +1,43 @@
+---
+layout: default
+title: "Cubic Evaluation"
+menuname: "CubicEval"
+permalink: /cubiceval/
+mathjax: true
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>The program <code>CubicEval</code> evaluates a cubic equation. In mathematics, a cubic function is a function of the form:
+
+				<p class="text-center"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi><mi>x</mi><mo>+</mo><mi>d</mi></math></p>
+
+				<p>where <em>a</em> is nonzero; or in other words, a function defined by a polynomial of degree three.</p>
+
+				<p class="text-center"><a title="By N.Mori (Polynomialdeg3.png) [Public domain], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3APolynomialdeg3.svg"><img width="512" alt="Polynomialdeg3" src="//upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Polynomialdeg3.svg/512px-Polynomialdeg3.svg.png"/></a></p>
+
+				<p>The program asks for the values of the coefficients <em>a</em>, <em>b</em>, <em>c</em>, and <em>d</em>. Then it asks for a minimum and maximum value of <em>x</em> in order to set the range of the calculation (<code>xmin</code> and <code>xmax</code>). Finally it asks for the size of the step, the separation between evaluations (<code>deltax</code>).</p>
+
+				<p>They are used in a loop:</p>
+
+				<pre><code class="language-java">for (double x = xmin; x <= xmax; x += deltax) {...}</code></pre>
+
+				<p>and then the results of <em>y</em> for each <em>x</em> are printed on screen. The function that makes the evaluation is in the class <code>CCubicEval</code>.
+
+				<h3>Function <code>evaluateX()</code></h3>
+
+				<p>This is the function that evaluates <em>y</em> for different values of <em>x</em>. It is defined as <code>static</code>, so that there is no need to instantiate the class to invoke it.</p>
+
+				<pre><code class="language-java">public static double evaluateX(CCubicEval f, double x) {
+	double y = f.a*Math.pow(x,3) + f.b*Math.pow(x,2) + f.c*x +  f.d;
+	return y;
+}</code></pre>
+
+				<p>In the application, we can call it by first creating an object of type <code>CCubicEval</code> that contains the values of the coefficients. Then we can reuse it to calculate the function in different regions:</p>
+
+				<pre><code class="language-java">CCubicEval f = new CCubicEval(a, b, c, d);
+
+...
+
+double y = CCubicEval.evaluateX(f, x);</code></pre>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/cubicEval">View Cubic Eval's repo</a></span>

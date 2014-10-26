@@ -1,0 +1,104 @@
+---
+layout:   default
+title:    "ProcessBuilder Uppercase"
+menuname: "PB Uppercase"
+permalink: /pbuppercase/
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>This is an example of the use of Java's <code>ProcessBuilder</code> class. This example is called <code>PBUppercase.java</code>, and it creates a child process that communicates with the parent in a bidirectional way using <strong>streams</strong>.</p>
+
+				<p>The parent process reads lines from its standard input and sends them to the standard input of the child process, using the <code>OutputStream</code> of the parent. The child process then converts it into uppercase, and prints it through its standard output. Then the parent prints what it receives from the child's <code>InputStream</code> and prints it too through its standard output.</p>
+
+				<h3>The child process</h3>
+				<p>The child process runs the program <code>uppercase.c</code>. Compile this program first using:</p>
+
+				<pre><code class="language-bash">$ gcc uppercase.c -o uppercase</code></pre>
+
+				<p>then check it works by running it:</p>
+
+				<pre><code class="language-bash">$ ./uppercase
+hello
+HELLO
+$</code></pre>
+
+				The code of <code>uppercase.c</code> is:
+
+				<pre><code class="language-java">#include &lt;stdio.h>
+#include &lt;string.h>
+
+int main(int argc, char *argv[]) {
+
+	char text[1024];
+	scanf("%s", &text[0]);
+
+	int i;
+	for(i = 0; i &lt; strlen(text); i++) {
+		text[i] = toupper(text[i]);
+	}
+
+	printf("%s\n", text);
+	return 0;
+}</code></pre>
+
+				<h3>The parent process</h3>
+				<p>The class <code>PBUppercase.java</code> creates a system process using <code>ProcessBuilder</code>, and takes as argument the command <code>./uppercase</code>. This class doesn't use <code>Commons</code>, so you can just compile it like this:</p>
+
+				<pre><code class="language-bash">$ javac PBUppercase.java</code></pre>
+
+				<p>Once compiled, you can run it like this:</p>
+
+				<pre><code class="language-bash">$ java PBUppercase ./uppercase
+hello
+HELLO
+$</code></pre>
+
+				<p>Here is the code of <code>PBUppercase</code>:
+
+				<pre><code class="language-java">import java.util.Scanner;
+import java.io.IOException; 
+
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+
+public class PBUppercase {
+	
+	public static void main(String[] command) {
+		String textIn, textOut;
+		Scanner sc = new Scanner(System.in);
+
+		try {
+			System.out.println("\nWrite something in lowercase and I'll convert it into uppercase: ");
+			textIn = sc.nextLine();
+
+			Process process   = new ProcessBuilder(command).start();
+			OutputStream os   = process.getOutputStream();
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
+
+			bw.write(textIn);
+			bw.close();
+
+		 	InputStream is    = process.getInputStream();
+			BufferedReader br = new BufferedReader (new InputStreamReader(is));
+
+			while ((textOut = br.readLine()) != null) {
+				System.out.println(textOut + "\n");
+			}
+
+			is.close();
+
+		} catch (IOException e) {
+			System.out.println("\nThere was an error running your command. Description:" + e.getMessage() + "\n");
+		} catch (Exception e) {
+			System.out.println("\nThere was a general error:" + e.getMessage() + "\n");
+		}
+	}
+}</code></pre>
+
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/pbUppercase">View PB Uppercase's repo</a></span>

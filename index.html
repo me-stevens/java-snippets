@@ -1,0 +1,14 @@
+---
+layout: default
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}">View the repo</a></span>
+				
+				<p><span class="dukesprites"></span>   VERY BASIC snippets of code that I find myself using all the time. Maybe they are useful for you too? Who knows. They are here for personal reference.</p>
+
+				<p>Each snippet is inside a folder and has a main program. Sometimes there are other classes too.</p>
+
+				<p>The Commons folder contains common methods used by all the snippets. They are defined as <code>static</code> inside a <code>final</code> "Commons" class. Then they are called as <code>Commons.method()</code>. The class must be imported wherever we want to use a Commons method, as <code>import commons.Commons</code>.</p>
+
+				<p>For example, the class <code>readDouble</code> is used to read a double introduced by keyboard. If the user enters text, it prompts him/her to write a number until a real number is entered.</p>

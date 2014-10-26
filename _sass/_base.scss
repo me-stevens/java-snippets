@@ -1,0 +1,238 @@
+/**
+ * Basic styling
+ */
+html,
+body {
+	min-height: 100%;
+}
+
+body {
+	font-family: $base-font-family;
+	font-size:   $base-font-size;
+	line-height: $base-line-height;
+	font-weight: 300;
+	color:       $text-color;
+	background-color: $background-color;
+	background-image:-webkit-repeating-linear-gradient(135deg, transparent, transparent 0.5em, rgba(255,255,255,0.5) 0.5em, rgba(255,255,255,0.5) 1em);
+	background-image: repeating-linear-gradient(-45deg, transparent, transparent .5em, rgba(255,255,255,.5) .5em, rgba(255,255,255,.5) 1em);
+	background-position: 0 0;
+}
+
+::-moz-selection {
+    background: $brand-color;
+    text-shadow: none;
+}
+
+::selection {
+    background: $brand-color;
+    text-shadow: none;
+}
+
+/**
+ * Set `margin-bottom` to maintain vertycal rhythm
+ */
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+ul, ol, dl, figure,
+%vertical-rhythm {
+	margin-bottom: $spacing-unit / 2;
+}
+
+
+
+/**
+ * Images
+ */
+img {
+	max-width: 100%;
+	height:    100%;
+	margin: 0 .625em .3em 0;
+	vertical-align: middle;
+}
+
+
+
+
+/**
+ * Figures
+ */
+figure > img {
+	display: block;
+}
+
+figcaption {
+	font-size: $small-font-size;
+}
+
+
+
+/**
+ * Lists
+ */
+ul, ol {
+	margin:0 0 1em 1em;
+	padding-left:.33em;
+}
+
+li {
+	> ul,
+	> ol {
+		 margin:.3em 0 0 1em;
+	}
+}
+
+ul {
+	list-style-type: none;
+}
+
+/**
+ * Headings
+ */
+h1, h2, h4, h5, h6 {
+	font-weight: 300;
+}
+
+h1 {
+	margin: 0;
+	color: $text-color; 
+	font-size: 3.6em;
+	letter-spacing: -.02em;
+	text-transform: uppercase;
+	text-align: right;
+	line-height: 1;
+
+	a,
+	a:visited,
+	a:active {
+		color: $text-color;
+	}
+}
+
+h2 {
+	font-size: 1.6em; 
+	letter-spacing: -.02em; 
+	margin: .3em 0 .625em;
+}
+
+h3 {
+	font-weight: 900;
+} 
+
+/**
+ * Links
+ */
+a {
+	background-color: inherit; 
+	color: $brand-color;
+	font-weight: 900;
+	text-decoration: none;
+
+	&:visited,
+	&:active {
+		color: $brand-color;
+	}
+
+	&:hover {
+		color: $text-color;
+		text-decoration: underline;
+	}
+}
+
+
+p {
+	margin:0 0 1em 0;
+}
+
+
+/**
+ * Blockquotes
+ */
+blockquote {
+	color: $grey-color;
+	border-left: 4px solid $grey-color-light;
+	padding-left: $spacing-unit / 2;
+	font-size: 18px;
+	letter-spacing: -1px;
+	font-style: italic;
+
+	> :last-child {
+		margin-bottom: 0;
+	}
+}
+
+
+
+/**
+ * Code formatting
+ */
+pre,
+code {
+	font-size: $small-font-size;
+}
+
+code {
+	padding: .1em;
+	background-color: #f9f9f9;
+}
+
+
+
+/**
+ * Wrapper
+ */
+.wrapper {
+	max-width: -webkit-calc(800px - (#{$spacing-unit} * 2));
+	max-width:		 calc(800px - (#{$spacing-unit} * 2));
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: $spacing-unit;
+	padding-left: $spacing-unit;
+	@extend %clearfix;
+
+	@include media-query($on-laptop) {
+		max-width: -webkit-calc(800px - (#{$spacing-unit}));
+		max-width:		 calc(800px - (#{$spacing-unit}));
+		padding-right: $spacing-unit / 2;
+		padding-left: $spacing-unit / 2;
+	}
+}
+
+
+hr {
+	color: #ccc;
+	background-color: #ccc;
+	height: .1em;
+	border: 0;
+	margin: 1em;
+}
+
+/**
+ * Clearfix
+ */
+%clearfix {
+
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+
+
+/**
+ * Icons
+ */
+.icon {
+
+	> svg {
+		display: inline-block;
+		width:  1em;
+		height: 1em;
+		vertical-align: middle;
+
+		path {
+			fill: $grey-color;
+		}
+	}
+}

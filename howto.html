@@ -1,0 +1,44 @@
+---
+layout: default
+title: "If you don't have Java"
+permalink: /howto/
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+				
+				<p>First check that you don't have java by typing:</p>
+
+				<pre><code class="language-bash">$ java -version</code></pre>
+
+				<p>and</p>
+
+				<pre><code class="language-bash">$ javac -version</code></pre>
+
+				<p>If nothing comes out, then install by typing:</p>
+
+				<pre><code class="language-bash">$ sudo apt-get install default-jre</code></pre>
+
+				<p>This will install the <strong>Java Runtime Environment</strong> that will allow you to use <code>java</code> to run the compiled snippets.</p>
+
+				<p>You might prefer to do:</p>
+
+				<pre><code class="language-bash">$ sudo apt-get install default-jdk</code></pre>
+
+				<p>to install the <strong>Java Development Kit</strong> that includes <code>javac</code>, which will allow you to compile the snippets and generate your own class files. It includes the  <code>jre</code>, so if you install this you will be able to both compile and run.</p>
+
+
+				<h2>Compiling and running</h2>
+
+				<p>Once you have Java in your system:</p>
+
+				<p>Go to the Java snippets folder and compile as:</p>
+
+				<pre><code class="language-bash">$ javac folder/mainprogram.java</code></pre>
+
+				<p>Run as:</p>
+
+				<pre><code class="language-bash">$ javac folder.mainprogram</code></pre>
+
+				<p>For example, for the snippet "<em>Age Calculation</em>":</p>
+
+				<pre><code class="language-bash">$ javac ageCalc/AgeCalc.java
+$ java ageCalc.AgeCalc</code></pre>

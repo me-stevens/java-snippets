@@ -1,0 +1,121 @@
+---
+layout: default
+title: "Stream Sockets"
+menuname: "Stream Sockets"
+permalink: /sktstream/
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+				<p>This folder contains a group of programs that communicate through <strong>stream sockets</strong> to send and receive bits of data. For this we create a server class and a client class.</p>
+
+				<strong>In the server class:</strong>
+				<ul>
+					<li>Create a server socket with the <code>ServerSocket</code> Java class.</li>
+					<li>Use the method <code>bind()</code> to set the IP and port from which it will listen.</li>
+					<li>Create a client socket with the <code>Socket</code> class and use the method <code>accept()</code> to accept a connection from the client socket and store it in the new socket.</li>
+					<li>Send and receive messages using <code>write()</code> and <code>read()</code>.</li>
+					<li>Call <code>close()</code> when you're done with your sockets.</li>
+				</ul>
+
+				<strong>In the client class:</strong>
+				<ul>
+					<li>Create a client socket with the <code>Socket</code> Java class.</li>
+					<li>Use the method <code>connect()</code> to set the IP and port of the server you want to connect to.</li>
+					<li>Send and receive messages using <code>write()</code> and <code>read()</code>.</li>
+					<li>Call <code>close()</code> when you're done with your sockets.</li>
+				</ul>
+
+
+
+				<h3><code>ServerSocketStream</code> and <code>ClientSocketStream</code></h3>
+				<p>This is a simple implementation of a server and a client that exchange a string message using stream sockets, following the previous points. Compile them and then run each in a separate terminal. Make sure the server is listening before you run the client.</p>
+
+				<p>The client connects to the server and sends a message. When the server receives the message, it prints it in its standard output.</p>
+
+				<p class="small"><a href="#code">Go to code</a>.</p>
+
+
+
+
+				<h3><code>FileServerSS</code> and <code>FileClientSS</code></h3>
+				<p>This pair implement a server/client connection to send files using Stream Sockets (SS). The client sends a file (<code>file.txt</code>) to the server, and the server receives it and prints its contents. To read the file, a <code>BufferedReader</code> is used by the client with an object of the <code>FileReader</code> class. The file is in the same folder as the programs.</p>
+
+				<p>The two programs can run in the same computer, in different terminals. The IP used is <code>localhost</code> and the port is <code>5555</code>.</p>
+
+				<p>To read the contents of the file and print them in the <code>stdout</code>, we manipulate the <code>InputStream</code> object with a <code>Scanner</code>:</p>
+
+				<pre><code class="language-java">InputStream in      = newSocket.getInputStream();
+String filecontents = "";
+Scanner s           = new Scanner(in, "UTF-8").useDelimiter("\\A | \\n");
+while (s.hasNext())
+	filecontents   += s.next();
+System.out.println(filecontents);</code></pre>
+
+				<p id="lazy"><strong>For the lazy:</strong> If you don't want to open two terminals manually, just compile and run <code>CSManager.java</code>, which will do that for you. Running <code>$ java CSManager</code> is equivalent to running the server in another terminal with:</p>
+
+				<pre><code class="language-bash">$ gnome-terminal -x sh -c "java FileServerSS; exec $SHELL"</code></pre>
+
+				<p>and then typing <code>$ java FileClientSS</code> in the current terminal. But, <code>CSManager.java</code> is not needed, you can start the server manually by typing <code>java FileServerSS</code> and then type <code>java FileClientSS</code> in another terminal as many times as you need it, so long as the server is listening.</p>
+
+				<p>The <code>CSManager</code> class uses the method <code>exec()</code> from class <code>Runtime</code>, and passes the command, environment and working directory:</p>
+
+				<pre><code class="language-java">Runtime rt   = Runtime.getRuntime();
+Process proc = rt.exec(cmdarray, envp, dir);</code></pre>
+
+				<p class="small"><a href="#code">Go to code</a>.</p>
+
+
+
+		 
+				<h3><code>CalcServer</code> and <code>CalcClient</code></h3>
+				<p>This is an example of <strong>multi-thread server</strong> when the order in which messages are sent and received is fixed beforehand. It implements a calculator where the client sents operations for the server to perform.</p>
+
+				<p>First, the client sends several messages in order, and the server receives them as they come. Then, the client is set to listen for the result that the server will send.</p>
+
+				<p>The server extends the class <code>Thread</code>, and reads and writes in its <code>run()</code> method. It uses <code>DataInputStream</code> and <code>DataOutputStream</code> to send and receive doubles.</p>
+
+				<p>In the <code>main()</code> method, it creates a thread for each socket that connects to it:</p>
+
+				<pre><code class="language-java">CalcServer thread = new CalcServer(newSocket);
+thread.start();</code></pre>
+
+				<p class="small"><a href="#code">Go to code</a>.</p>
+
+
+
+				<h3><code>FileServer</code> and <code>FileClient</code></h3>
+				<p>This is another file exchange server, but implementing <strong>multi-threading</strong>. The server stores text files in the <code>Files</code> folder, which is in the same directory as the program. The client asks for a file, specifying the file name, without extension:</p>
+
+				<pre><code class="language-bash">$ java FileClient filename</code></pre>
+
+				<p>If the file is in the server, it is sent to the client, character by character. The client receives the file and prints it to its <code>stdout</code>. To read the file, we use again a <code>BufferedReader</code> with a <code>FileReader</code> object.</p>
+
+
+				<pre><code class="language-java">// Sending file
+if(file.exists() && !file.isDirectory()) {
+	br = new BufferedReader(new FileReader(filepath));
+	String line  = null;
+	while ((line = br.readLine()) != null) {
+		for(int i=0; i&lt;line.length(); i++) {
+			os.write(line.charAt(i));
+			os.flush();
+			System.out.print(line.charAt(i));
+		}
+		os.write('\n');
+		os.flush();
+		System.out.println();
+	}
+	clientSocket.shutdownOutput();
+}</code></pre>
+
+				<pre><code class="language-java">// Receiving file
+int character;
+while ((character = is.read()) != -1) {
+	char ch = (char) character;
+	System.out.print(ch);
+}</code></pre>
+				<p>The programs can be launched each in a different terminal, in the same computer. The server listens at <code>localhost:5555</code></p>
+
+
+
+
+				<span id="code" class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/sktStream">View Stream Sockets' repo</a></span>

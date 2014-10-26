@@ -1,0 +1,61 @@
+---
+layout: default
+title: "ProcessBuilder with multi-threading"
+menuname: "PB Multithread"
+permalink: /pbmultithread/
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>Before reading this, it's probably a good idea to practice with <a href="{{ site.baseurl }}/pbuppercase/">ProcessBuilder Uppercase</a> and <a href="{{ site.baseurl }}/pbruntime/">ProcessBuilder and Runtime</a>. When you finish, you may probably ask yourself: what if I want to run several commands? In this example, we run two commands in a row. When the first command finishes its execution, the second command is called, and the result of both is sent to the standard output.</p>
+
+				<p>We are going to run the command <code>ls -al</code> followed by the command <code>tr '[eiou]' a</code>. Thus, we need two child processes, one for each command. The output of the first child process is used as the input of the second child process.</p>
+
+				<h3><code>TwoCommands.java</code></h3>
+
+				<p>We use <code>ProcessBuilder</code> again, and the method <code>waitFor()</code> of class <code>Process</code>. Remember to close the output stream before starting to read into the second process:
+
+				<pre><code class="language-java">bw.close();
+
+// Synchronization
+int finish = process2.waitFor();</code></pre>
+
+				<p>The result of running this program is:</p>
+
+				<pre><code class="language-bash">$ java TwoCommands 
+0
+tatal 28
+drwxrwxr-x 2 adman adman 4096 fab 28 19:50 .
+drwxr-xr-x 7 adman adman 4096 fab 28 19:59 ..
+-rw------- 1 adman adman  673 fab 28 19:50 PassThraad.java
+-rw------- 1 adman adman 1040 act 15 20:35 TwaCammands2.java
+-rw-rw-r-- 1 adman adman 1954 fab 28 19:46 TwaCammands.class
+-rw------- 1 adman adman 1430 fab 28 19:24 TwaCammands.java</code></pre>
+
+				<p>which is the equivalent of typing:</p>
+
+				<pre><code class="language-bash">$ ls -al | tr '[eiou]' a</code></pre>
+
+				<p>in the terminal.</p>
+ 
+
+				<h3><code>TwoCommands2.java</code></h3>
+
+				<p>Streams can also be managed by using Java class <code>Thread</code>. You can find wonderful examples of it in <a href="http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html">this JavaWorld comprehensive article</a>. <code>TwoCommands2.java</code> is an adapted version of those examples, where we eliminate the lines where the stream of <code>process1</code> is sent manually to <code>process2</code>, and instead they are wrapped into a thread:</p>
+
+				<pre><code class="language-java">PassThread wrapper = new PassThread( is1, os );
+new Thread(wrapper).start();
+
+// Synchronization
+int finish = process2.waitFor();</code></pre>
+
+				<p>For this, another class, <code>PassThread</code>, is implemented.</p>
+
+				<p>To compile, type:</p>
+
+				<pre><code class="language-java">$ javac pbMultithread/TwoCommands2.java</code></pre>
+
+				<p>and to run:</p>
+
+				<pre><code class="language-java">$ java pbMultithread.TwoCommands2</code></pre>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/pbMultithread">View PB Multi-thread's repo</a></span>

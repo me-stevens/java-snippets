@@ -1,0 +1,22 @@
+			<a href="#" class="menu-icon">
+				<img src="{{ site.baseurl }}/css/hamburger.svg" width="18" height="15" alt="Hamburger icon">
+			</a>
+
+			<div class="sidebar">
+
+				<ul>
+					<li><a class="menu" href="{{ site.baseurl }}/howto/">How to</a></li>{% for page in site.pages %}{% if page.menuname %}
+					<li><a class="menu" href="{{ page.url | prepend: site.baseurl }}">{{ page.menuname }}</a></li>{% endif %}{% endfor %}
+				</ul>
+
+<!--				<p>Oracle links:</br>-->
+<!--					<a href="http://www.oracle.com">Oracle</a> | -->
+<!--					<a href="https://java.com">Java</a> | 	-->
+<!--					<a href="http://www.oracle.com/us/technologies/java/duke-424174.html">Duke</a>-->
+<!--				</p>-->
+
+<!--				<p>Java IDEs:</br>-->
+<!--					<a href="https://netbeans.org/">NetBeans</a> | <a href="https://www.eclipse.org/">Eclipse</a>-->
+<!--				</p>-->
+
+			</div>

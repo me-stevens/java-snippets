@@ -1,0 +1,78 @@
+---
+layout: default
+title: "Age Calculation"
+permalink: /agecalc/
+menuname: "Age Calculation"
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>Age Calculation is a program that calculates how old a person will be in a certain date.</p>
+
+				<h3>Class CPerson</h3>
+				<p>Creates a person. It has a String variable to store the name and a Date object to store the birth date. It uses the Commons class method <code>readInt()</code> to read separately the day, month and year of birth from a keyboard input, and then calls the function <code>setDate(d, m, y)</code> to set the birthdate of the person.</p>
+
+				<h3>Class Date</h3>
+				<p>It has setters and getters for the day, month and year, but also a function to enter the three of them in one shot. It checks that the values introduced are correct. For the year, it asks for a number bigger than 0 to avoid overcomplicating the calculation of the leap years. It checks that the month has a value between 1 and 12, and if it doesn't, sets a value of 1:
+
+				<pre><code class="language-java">if (m > 0 && m <= 12) {
+	mm = m;
+}
+else {
+	mm = 1;
+	System.out.println("Wrong month. Month set to 1.")
+}</code></pre>
+
+				<p>The day is trickier, specially if the month or the year have not been set yet. Anyway, the class checks that the value of the day is between 1 and the maximum number of days of the stored value of the month at the moment of the execution. If the day is wrong, it is set to 1:
+
+				<pre><code class="language-java">public void setDay (int d) {
+	if (d > 0 && d <= daysOfTheMonth(mm, yy)) {
+		dd = d;
+	}
+	else {
+		dd = 1;
+		System.out.println("Wrong day. Day set to 1.")
+	}
+}</code></pre>
+
+				<h4>Class <code>daysOfTheMonth(m, y)</code></h4>
+				<p>The maximum number of days of the month is calculated by <code>daysOfTheMonth(m, y)</code>. It takes a month and a year as parameters and returns 31 or 30 depending of the month. For the month of February, it also checks if the year is leap, and then returns 28 or 29.</p>
+
+
+				<pre><code class="language-java">public int daysOfTheMonth(int m, int y) {
+		
+	if ( m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
+		return 31;
+	}
+
+	else if ( m == 2 ) {
+		if ( (y % 4.0 == 0) && ( (y % 100.0 != 0) || (y % 400.0 == 0) ) ) {
+			return 28;
+		}
+		return 29;
+	}
+	return 30;
+}</code></pre>
+
+				<p>A leap year is a year containing one additional day in order to keep the calendar year synchronized with the astronomical or seasonal year, since a period of 365 days is shorter than a solar year by almost 6 hours. Hence, leap years happen every 4 years. But over a period of 400 years, the accumulated error of adding a leap day every 4 years amounts to about 3 extra days. This is corrected by omitting February 29 in the 3 century years that are integer multiples of 100 but not integer multiples of 400. Hence the condition:</p>
+
+				<pre><code>(y % 4.0 == 0) && ( (y % 100.0 != 0) || (y % 400.0 == 0) )</code></pre>
+
+				<h3>Other Date methods</h3>
+
+				<h4><code>convertToDays()</code></h4>
+
+				<p>A rough way (very rough) of calculating how many days have passed since <strong>the reference date 1/1/1</strong>. It just multiplies the year difference by 365 and adds the day of the month: <code>int days = (yy - 1)*365 + dd;</code>. Then it calculates how many days have passed since day 1 of month 1 up to the actual month and adds it to the total days:</p>
+
+				<pre><code class="language-java">for (int m = 1; m < mm; m++) {
+	days += daysOfTheMonth(mm, yy);
+}</code></pre>
+
+				<p>There are Java libraries out there that achieve this in a much more accurate way. This is done for the sake of learning and experimenting.</p>
+
+				<h4><code>substractDate()</code></h4>
+
+				<p>It converts the date of the object calling the function and the date of the object passed as parameter to days. Then it substracts them, and uses the <code>Math.abs()</code> function to have the actual difference without sign, so that we don't have to care about which date is bigger.</p>
+
+				<p>Another implementation could be done declaring the function as <code>static</code> and calling it with two parameters like this:  <code>Date.substractDate(date1, date2)</code>.</p>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/ageCalc">View Age Calculation's repo</a></span>

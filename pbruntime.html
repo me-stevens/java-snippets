@@ -1,0 +1,135 @@
+---
+layout:   default
+title:    "ProcessBuilder and Runtime"
+menuname: "PB and Runtime"
+permalink: /pbruntime/
+---
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+				<p>The <code>Process</code> class can be used alone to invoke child processes, as in <code>RunProcess.java</code>:</p>
+
+				<pre><code class="language-java">import java.io.IOException;
+import java.util.Arrays;
+
+public class RunProcess {
+	
+	public static void main(String[] args) throws IOException {
+	
+		if (args.length <= 0) {
+			System.err.println("\nI need a command to run!\n");
+			System.exit(-1);
+		}
+
+		ProcessBuilder pb   = new ProcessBuilder(args);
+
+		try {
+			Process process = pb.start();
+			int procretrn   = process.waitFor();
+			System.out.println("\nRunning " + Arrays.toString(args) + " returns " + procretrn + "\n");
+
+		} catch (IOException ex){
+			System.err.println("\nE/S exception!\n");
+			System.exit(-1);
+
+		} catch (InterruptedException ex){
+			System.err.println("\nThe child process crashed.\n");
+			System.exit(-1);
+		}
+	}
+}</code></pre>
+
+				<p>or together with the <code>Runtime</code> class to create native processes, as shown in <code>RuntimeProcess.java</code>:</p>
+
+				<pre><code class="language-java">import java.io.IOException;
+
+public class RuntimeProcess {
+
+	public static void main(String[] args) throws IOException {
+
+		if (args.length <= 0) {
+			System.err.println("\nI need a command to run!\n");
+			System.exit(-1);
+		}
+
+		Runtime runtime = Runtime.getRuntime();
+
+		try {
+			Process process = runtime.exec(args);
+			System.out.println("Press Enter to continue.");
+			System.in.read();
+			process.destroy();
+
+		}catch(IOException ex){
+			System.err.println("\nE/S exception!\n");
+			System.exit(-1);
+		}
+	}
+}</code></pre>
+
+
+				<p>These classes don't use <code>Commons</code>, so you can just compile them like this:</p>
+
+				<pre><code class="language-bash">$ javac RunProcess.java</code></pre> 
+				<pre><code class="language-bash">$ javac RuntimeProcess.java</code></pre> 
+
+				<p>and run them like this:</p>
+
+				<pre><code class="language-bash">$ java RunProcess gnome-calculator</code></pre>
+				<pre><code class="language-bash">$ java RuntimeProcess gnome-calculator</code></pre>
+
+				<p>which will open Ubuntu's calculator.</p>
+
+				<p>If you open a new terminal and list the active system processes, you will see both the parent and the child:</p>
+
+				<pre><code class="language-bash">$ $ ps aux | grep calc
+admin     8817  0.2  0.2 3608428 19140 pts/12  Sl+  18:54   0:00 java RuntimeProcess gnome-calculator
+admin     8835  0.5  0.2 638936 20320 pts/12   Sl+  18:54   0:00 gnome-calculator
+admin     8981  0.0  0.0  18256   924 pts/24   S+   18:54   0:00 grep --color=auto calc
+</code></pre>
+
+
+				<h3>Most used <code>Process</code> methods</h3>
+
+				<table class="table" summary="This table lists some of the most used methods from Java class Process and describes them briefly.">
+					<caption><code>Process</code> methods</caption>
+					<thead>
+						<tr>
+							<th>Method</th>
+							<th>Returns</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>getOutputStream() </code></td>
+							<td><code>OutputStream</code></td>
+							<td>Obtains the output stream of the child conected to the <code>stdin</code> of the parent.</td>
+						</tr>
+						<tr>
+							<td><code>getInputStream() </code></td>
+							<td><code>InputStream</code></td>
+							<td>Obtains the input stream of the child conected to the <code>stdout</code> of the parent.</td>
+						</tr>
+						<tr>
+							<td><code>getErrorStream() </code></td>
+							<td><code>InputStream</code></td>
+							<td>Obtains the error stream of the child conected to the <code>stderr</code> of the parent.</td>
+						</tr>
+						<tr>
+							<td><code>destroy() </code></td>
+							<td><code>void</code></td>
+							<td>Kills the child process.</td>
+						</tr>
+						<tr>
+							<td><code>waitFor() </code></td>
+							<td><code>int</code></td>
+							<td>Parent process waits until the child is finished.</td>
+						</tr>
+						<tr>
+							<td><code>exitValue() </code></td>
+							<td><code>int</code></td>
+							<td>Gets the return value of the child process.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<span class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/pbRuntime">View PB and Runtime's repo</a></span>

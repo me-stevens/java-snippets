@@ -1,0 +1,93 @@
+---
+layout:    default
+title:     "Datagram Sockets"
+menuname:  "Datagram Sockets"
+permalink: /sktdatagram/
+---
+
+				<h2>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h2>
+
+				<p>This folder contains a group of programs that communicate through <strong>datagram sockets</strong> to send and receive bits of data. Each datagram socket can act as a server or as a client.</p>
+
+				<strong>Steps for a datagram socket connection:</strong>
+				<ul>
+					<li>Create a server socket with the <code>DatagramSocket</code> Java class.</li>
+					<li>Use the method <code>bind()</code> to set the IP, and the port if it will be a server.</li>
+					<li>Send and receive messages using <code>send()</code> and <code>receive()</code>. The <code>send()</code> method requires an IP and port.</li>
+					<li>Call <code>close()</code> when you're done with your sockets.</li>
+				</ul>
+
+
+
+
+				<h3><code>DatagramReceptor</code> and <code>DatagramEmitter</code></h3>
+
+				<p>This is a simple implementation of a server and a client that exchange a string message using datagram sockets, following the previous points. Compile them and then run each in a separate terminal. Make sure the receptor is listening before you run the emitter.</p>
+				<p>Here, one datagram socket is acting as the server, and the other as the client. The client connects to the server and sends a message. When the server receives the message, it prints it in its standard output.</p>
+				<p class="small"><a href="#code">Go to code</a>.</p>
+
+
+
+
+
+				<h3><code>DatagramReceiver</code> and <code>DatagramSender</code></h3>
+
+				<p>Here, both receiver and sender send and receive a <em>token</em>, but one has to be listening first; that's the receiver. Both programs are acting as server and as client to each other: the receiver first starts acting as a server, listening until it receives the token from the sender, when this happens, it sends a message with the token, acting as a client. On the other side, the sender first sends a token, and then receives it back from the receiver. </p>
+				<p>Both programs can be run on the same computer, on different terminals. Be sure to run the receiver first. They listen on <code>localhost:5555</code>.
+				<p>If you don't want to run them in two terminals manually, you can use <code>SRManager.java</code>, that works as <code>CSManager.java</code> in the <a href="{{ base.url }}/sktstream/#lazy">stream sockets</a>, just introducing a small delay of half a second between both programs to make sure that the receiver is first.</p>
+
+				<pre><code class="language-java">try {
+	Thread.sleep(500);
+} catch(InterruptedException ex) {
+	Thread.currentThread().interrupt();
+}</code></pre>
+
+				<p>It also adds a new printing function.</p>
+				<p class="small"><a href="#code">Go to code</a>.</p>
+
+
+				<h3><code>SocketRing</code> and <code>RingManager</code></h3>
+
+				<p>This is a pair of programs that implement <strong>a ring of datagram sockets</strong>. The <code>SocketRing</code> class has two arguments: the size of the ring (how many sockets on it) and the position of the current socket in the ring.</p>
+				<p>Each socket waits until it receives the message from the previous socket in the ring, and then sends it to the next socket in the ring (like the scissors game). The first socket in the ring creates the message and receives it from the last socket in the ring. All the sockets are created from the same program, <code>SocketRing</code>, but are run with different input arguments.</p>
+				<p>The first socket is at position <code>0</code>, and the minimum number of sockets is two. Each socket listens in a different port and they use ports from <code>5550</code> on.</p>
+				<p>The <code>SocketRing</code> class first checks the input parameters, then assigns the port numbers:</p>
+
+				<pre><code class="language-java">// Assigning ports
+int startPort = 5550;
+int thisPort  = startPort + position;
+int nextPort  = thisPort + 1;
+if (position == nOfProcs - 1)
+	nextPort  = startPort;</code></pre>
+
+				<p>From the second socket on, they first receive and then send. Using conditionals, we make the first socket send first and then receive. Before sending the token to the next position, a delay of one second is introduced, to make sure that all the sockets are listening before we start sending messages.</p>
+
+				<pre><code class="language-java">if (position == 0) {
+	message = "token".getBytes();
+	try {
+		Thread.sleep(1000);
+	} catch(InterruptedException ex) {
+		Thread.currentThread().interrupt();
+	}
+}</code></pre>
+
+				<p>Just like in previous snippets, the different gnome terminals are launched with the help of <code>RingManager.java</code>. It implements a loop through the number of sockets in the ring. In each loop, it launches a terminal to run the command <code>$ java SocketRing nOfProcs position</code>:</p>
+
+				<pre><code class="language-java">int nOfProcs = 3;
+for(int i=0; i&lt;nOfProcs; i++) {
+	String[] cmdarray = {"gnome-terminal", "--geometry=100x15+1000+" + i*300,  "-x", "sh", "-c", "java SocketRing " + nOfProcs + " " + i + "; exec $SHELL"};
+	csm.launch(cmdarray, envp, dir);
+}</code></pre>
+
+				<p>To run the snippet, simply call the <code>RingManager</code>:</p>
+
+				<pre><code class="language-bash">$ java RingManager</code></pre>
+				<p class="small"><a href="#code">Go to code</a>.</p>
+
+
+
+				<h3><code>TimeServer</code> and <code>TimeClient</code></h3>
+
+				<p>This is an example of a time server using datagram sockets. The client sends a message specifying the date format, and the server sends the date back.</p>
+
+				<span id="code" class="button text-center">{% include github.svg %} <a href="https://github.com/{{ site.git_username }}/{{ site.git_repo}}/tree/master/sktDatagram">View Datagram Sockets' repo</a></span>
