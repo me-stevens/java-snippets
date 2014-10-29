@@ -1,0 +1,20 @@
+$ javac ageCalc/AgeCalc.java
+$ java ageCalc.AgeCalc 
+
+Creating a new person.
+
+Name: Jon Doe
+Date of birth:
+Year: 1980
+Month: 01
+Day: 01
+
+Introduce a date and I'll tell you how old that person will be:
+Day: 01
+Month: 01
+Year: 2030
+
+Jon Doe will be 50 years old in 2030.
+
+$ 
+
