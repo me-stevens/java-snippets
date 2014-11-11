@@ -1,0 +1,7 @@
+$ javac ascii/Ascii.java 
+$ java ascii.Ascii 
+
+Introduce some text: @
+Character '@', ASCII code = 64
+
+$
