@@ -1,0 +1,45 @@
+$ javac qRoots/CqRoots.java 
+$ java qRoots.CqRoots 
+
+Introduce the coefficients of the quadratic equation
+
+a: 1
+
+b: 1
+
+c: 1
+
+Calculation of the roots:
+
+The discriminant is negative. The roots of the quadratic equation are complex: r1 = -0.50 + 0.87i and r2 = -0.50 - 0.87i.
+
+$ java qRoots.CqRoots 
+
+Introduce the coefficients of the quadratic equation
+
+a: 1
+
+b: 2
+
+c: 1
+
+Calculation of the roots:
+
+The discriminant is zero. The only root of the quadratic equation is r = -1.00.
+
+$ java qRoots.CqRoots 
+
+Introduce the coefficients of the quadratic equation
+
+a: 1
+
+b: 3
+
+c: 1
+
+Calculation of the roots:
+
+The discriminant is positive. The roots of the quadratic equation are r1 = -0.38 and r2 = -2.62.
+
+$
+
