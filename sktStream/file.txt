@@ -1,0 +1,4 @@
+﻿Text file for the
+FileServerSS.java and 
+FileClientSS.java snippets of
+the http://javasnippets.tk web.

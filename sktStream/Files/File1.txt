@@ -1,0 +1,2 @@
+Text file 1 for the Stream sockets snippets example.
+End.
