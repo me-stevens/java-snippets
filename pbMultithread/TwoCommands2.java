@@ -2,7 +2,7 @@ package pbMultithread;
 
 import java.io.*;
 
-public class Twocommands2 {
+public class TwoCommands2 {
 
 	public static void main(String[] args) throws IOException, Exception {
 

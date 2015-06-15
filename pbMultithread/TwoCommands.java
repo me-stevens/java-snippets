@@ -1,7 +1,7 @@
 import java.io.*; 
 import java.lang.ProcessBuilder;
 
-public class Twocommands {
+public class TwoCommands {
 	
 	public static void main (String [] args) {
 
